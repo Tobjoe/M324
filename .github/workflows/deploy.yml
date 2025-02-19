@@ -30,8 +30,7 @@ jobs:
       - name: 📄 GitHub Pages Setup
         run: |
           mkdir public
-          cp -r index.html public/  # Falls index.html vorhanden ist
-          cp -r README.md public/   # Optional: README anzeigen
+          cp -r index.md public/  # Falls index.html vorhanden ist
           cp -r assets public/      # Falls Bilder oder Styles enthalten sind
 
       - name: 🚀 Deployment zu GitHub Pages

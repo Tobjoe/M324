@@ -16,7 +16,7 @@ jobs:
       - name: 🔧 .NET installieren
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '6.0.x'  # Stelle sicher, dass die richtige .NET Version verwendet wird
+          dotnet-version: '8.0.x'  # Stelle sicher, dass die richtige .NET Version verwendet wird
 
       - name: 📦 Projekt wiederherstellen
         run: dotnet restore

@@ -1,0 +1,41 @@
+name: Deploy ToDo-App to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # Workflow startet bei jedem Push auf den main-Branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🛠️ Repository klonen
+        uses: actions/checkout@v4
+
+      - name: 🔧 .NET installieren
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '6.0.x'  # Stelle sicher, dass die richtige .NET Version verwendet wird
+
+      - name: 📦 Projekt wiederherstellen
+        run: dotnet restore
+
+      - name: 🏗️ Build der Applikation
+        run: dotnet build --configuration Release
+
+      - name: ✅ Tests ausführen
+        run: dotnet test --no-build --verbosity normal
+
+      - name: 📄 GitHub Pages Setup
+        run: |
+          mkdir public
+          cp -r index.html public/  # Falls index.html vorhanden ist
+          cp -r README.md public/   # Optional: README anzeigen
+          cp -r assets public/      # Falls Bilder oder Styles enthalten sind
+
+      - name: 🚀 Deployment zu GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages  # Branch für GitHub Pages
+          folder: public    # Der Ordner, der deployed wird

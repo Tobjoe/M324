@@ -74,6 +74,11 @@ class Program
 
     static void RemoveTask()
     {
+        if (tasks.Count == 0)  // Überprüft, ob Aufgaben vorhanden sind
+        {
+            Console.WriteLine("Keine Aufgaben zum Entfernen vorhanden.");
+            return;
+        }
         ShowTasks();
         Console.Write("Nummer der zu löschenden Aufgabe: ");
         if (int.TryParse(Console.ReadLine(), out int index) && index > 0 && index <= tasks.Count)

@@ -67,6 +67,7 @@ class Program
         if (!string.IsNullOrWhiteSpace(task))
         {
             tasks.Add(task);
+            tasks.Sort();
             Console.WriteLine("Aufgabe hinzugefügt!");
         }
     }

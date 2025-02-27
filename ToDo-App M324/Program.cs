@@ -6,6 +6,7 @@ class Program
 {
     static string filePath = "todo_list.csv";
     static List<string> tasks = new List<string>();
+    static List<bool> taskStatus = new List<bool>();
 
     static void Main()
     {
@@ -18,7 +19,9 @@ class Program
             Console.WriteLine("2. Aufgabe entfernen");
             Console.WriteLine("3. Aufgaben anzeigen");
             Console.WriteLine("4. Aufgaben speichern");
-            Console.WriteLine("5. Beenden");
+            Console.WriteLine("5. Aufgabe als erledigt markieren");
+            Console.WriteLine("6. Beenden");
+            
             Console.Write("Auswahl: ");
 
             string choice = Console.ReadLine();
@@ -37,9 +40,12 @@ class Program
                     SaveTasks();
                     Console.WriteLine("Aufgaben gespeichert!");
                     break;
-                case "5":
+                case "6":
                     SaveTasks();
                     return;
+                case "5":
+                    MarkTaskAsDone();
+                    break;
                 default:
                     Console.WriteLine("Ungültige Auswahl!");
                     break;
@@ -61,16 +67,21 @@ class Program
     }
 
     static void AddTask()
+{
+    Console.Write("Neue Aufgabe: ");
+    string task = Console.ReadLine();
+    if (!string.IsNullOrWhiteSpace(task))
     {
-        Console.Write("Neue Aufgabe: ");
-        string task = Console.ReadLine();
-        if (!string.IsNullOrWhiteSpace(task))
-        {
-            tasks.Add(task);
-            tasks.Sort();
-            Console.WriteLine("Aufgabe hinzugefügt!");
-        }
+        tasks.Add(task);
+        taskStatus.Add(false);  // Neue Aufgabe ist standardmäßig nicht erledigt
+        tasks.Sort();  // Aufgaben alphabetisch sortieren
+        Console.WriteLine("Aufgabe hinzugefügt und sortiert!");
     }
+    else
+    {
+        Console.WriteLine("Aufgabe darf nicht leer sein.");
+    }
+}
 
     static void RemoveTask()
     {
@@ -92,19 +103,34 @@ class Program
         }
     }
 
-    static void ShowTasks()
+   static void ShowTasks()
+{
+    Console.WriteLine("\nAktuelle Aufgaben:");
+    if (tasks.Count == 0)
     {
-        Console.WriteLine("\nAktuelle Aufgaben:");
-        if (tasks.Count == 0)
+        Console.WriteLine("Keine Aufgaben vorhanden.");
+    }
+    else
+    {
+        for (int i = 0; i < tasks.Count; i++)
         {
-            Console.WriteLine("Keine Aufgaben vorhanden.");
-        }
-        else
-        {
-            for (int i = 0; i < tasks.Count; i++)
-            {
-                Console.WriteLine($"{i + 1}. {tasks[i]}");
-            }
+            string status = taskStatus[i] ? "[Erledigt]" : "[Nicht erledigt]";
+            Console.WriteLine($"{i + 1}. {tasks[i]} {status}");
         }
     }
+}
+    static void MarkTaskAsDone()
+{
+    ShowTasks();
+    Console.Write("Nummer der Aufgabe, die als erledigt markiert werden soll: ");
+    if (int.TryParse(Console.ReadLine(), out int index) && index > 0 && index <= tasks.Count)
+    {
+        taskStatus[index - 1] = true;
+        Console.WriteLine("Aufgabe als erledigt markiert!");
+    }
+    else
+    {
+        Console.WriteLine("Ungültige Eingabe!");
+    }
+}
 }
